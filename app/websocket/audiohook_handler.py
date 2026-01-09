@@ -1,6 +1,4 @@
-import base64
 from datetime import datetime
-from fastapi import WebSocket
 from app.websocket.connection_manager import ConnectionManager
 from app.utils.audio_buffer import AudioBuffer
 from app.core.pcm_converter import PCMConverter
@@ -8,7 +6,6 @@ from app.core.embedding_generator import EmbeddingGenerator
 from app.core.voice_matcher import VoiceMatcher
 from app.repositories.voice_repository import VoiceRepository
 from app.dependencies import get_model_manager
-from app.config import settings
 from app.schemas.audiohook import IdentificationResult
 
 
@@ -29,32 +26,6 @@ class AudioHookHandler:
         self.voice_matcher = VoiceMatcher()
         self.pcm_converter = PCMConverter()
 
-    async def process_audio_message(self, message: dict):
-        conversation_id = message.get("conversation_id")
-        audio_data_base64 = message.get("audio_data")
-
-        if not conversation_id or not audio_data_base64:
-            print(f"Mensaje inválido: falta conversation_id o audio_data")
-            return
-
-        if not self.audio_buffer.is_active(conversation_id):
-            return
-
-        try:
-            pcm_bytes = base64.b64decode(audio_data_base64)
-
-            self.audio_buffer.append_chunk(conversation_id, pcm_bytes)
-
-            duration = self.audio_buffer.get_accumulated_duration(conversation_id)
-
-            print(f"[{conversation_id}] Duración acumulada: {duration:.2f}s")
-
-            if duration >= settings.TARGET_DURATION_SEC:
-                await self.identify_speaker(conversation_id)
-
-        except Exception as e:
-            print(f"Error procesando audio para {conversation_id}: {str(e)}")
-
     async def identify_speaker(self, conversation_id: str):
         print(f"[{conversation_id}] Iniciando identificación...")
 
@@ -62,7 +33,7 @@ class AudioHookHandler:
             chunks = self.audio_buffer.get_chunks(conversation_id)
             threshold = self.audio_buffer.get_threshold(conversation_id)
 
-            waveform = self.pcm_converter.pcm_chunks_to_waveform(chunks)
+            waveform = self.pcm_converter.ulaw_chunks_to_waveform(chunks)
 
             embedding = self.embedding_generator.generate_embedding(waveform)
 

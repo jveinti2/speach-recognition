@@ -2,6 +2,8 @@ from typing import List
 from datetime import datetime
 from app.config import settings
 
+ULAW_SAMPLE_RATE = 8000
+
 
 class AudioBuffer:
     def __init__(self):
@@ -13,7 +15,7 @@ class AudioBuffer:
 
         self._buffers[conversation_id] = {
             "chunks": [],
-            "sample_rate": settings.SAMPLE_RATE,
+            "sample_rate": ULAW_SAMPLE_RATE,
             "active": False,
             "threshold": threshold,
             "created_at": datetime.now()
@@ -44,7 +46,7 @@ class AudioBuffer:
         if not chunks:
             return 0.0
 
-        total_samples = sum(len(chunk) // 2 for chunk in chunks)
+        total_samples = sum(len(chunk) for chunk in chunks)
 
         duration = total_samples / sample_rate
 
