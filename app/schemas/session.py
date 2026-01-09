@@ -8,14 +8,13 @@ class SessionActivateRequest(BaseModel):
     threshold: float = Field(0.75, ge=0.0, le=1.0)
 
 
+class VoiceData(BaseModel):
+    name: Optional[str] = None
+
+
 class SessionActivateResponse(BaseModel):
-    conversation_id: str
-    status: str
-    activated_at: datetime
     identified: bool
-    person_id: Optional[str] = None
-    score: float
-    processing_time_seconds: Optional[float] = None
+    data: VoiceData
 
 
 class SessionPauseRequest(BaseModel):
