@@ -1,151 +1,56 @@
 # Speech Recognition - Sistema de Identificación de Hablantes
 
-Sistema de reconocimiento de voz para identificación de hablantes usando embeddings ECAPA-TDNN de SpeechBrain.
+Sistema de identificación biométrica de voz usando ECAPA-TDNN de SpeechBrain. Registra voces generando embeddings de 192-d e identifica hablantes por similitud coseno.
 
-## Descripción
-
-Este proyecto implementa un sistema de identificación biométrica de voz que:
-- **Registra** voces de usuarios generando embeddings de 192 dimensiones
-- **Identifica** hablantes comparando audio capturado contra una base de datos de voces registradas
-- Usa el modelo pre-entrenado **ECAPA-TDNN** de SpeechBrain (VoxCeleb dataset)
-- Aplica **similitud coseno** para matching de voces (threshold 0.75)
-
-## Requerimientos
-
-- Python 3.8+
-- Micrófono funcional
-- Windows (configurado para backend 'soundfile' de torchaudio)
-- ~500MB espacio para modelo y dependencias
-
-## Instalación
-
-### 1. Crear entorno virtual
+## Setup
 
 ```bash
+# 1. Crear y activar entorno virtual
 python -m venv venv
-```
-
-### 2. Activar entorno virtual
-
-```bash
 venv\Scripts\activate
-```
 
-### 3. Actualizar pip
-
-```bash
+# 2. Instalar dependencias
 python -m pip install --upgrade pip
-```
-
-### 4. Instalar PyTorch y torchaudio (CPU only)
-
-```bash
 python -m pip install torch==2.2.2 torchaudio==2.2.2 --index-url https://download.pytorch.org/whl/cpu
-```
-
-### 5. Instalar dependencias del proyecto
-
-```bash
-pip install speechbrain==0.5.16 faiss-cpu==1.8.0 numpy sounddevice soundfile
-```
-
-O usar el archivo de requerimientos:
-
-```bash
 pip install -r requirements.txt
 ```
 
-### 6. Instalar Jupyter (necesario para notebooks)
+## Opción 1: Probar con Notebooks
 
 ```bash
 pip install jupyter
-```
-
-### 7. Descargar modelo pre-entrenado
-
-**Opción A - Descarga automática (recomendada):**
-
-El modelo se descargará automáticamente la primera vez que ejecutes los notebooks. SpeechBrain lo descarga desde Hugging Face y lo guarda en `models/spkrec-ecapa-voxceleb/`.
-
-**Opción B - Descarga manual:**
-
-Si prefieres descargar el modelo manualmente:
-
-```bash
-# Descargar desde Hugging Face Hub
-huggingface-cli download speechbrain/spkrec-ecapa-voxceleb --local-dir models/spkrec-ecapa-voxceleb
-```
-
-O descárgalo desde: https://huggingface.co/speechbrain/spkrec-ecapa-voxceleb
-
-Asegúrate de que los archivos estén en `models/spkrec-ecapa-voxceleb/`:
-- `classifier.ckpt` (~5MB)
-- `embedding_model.ckpt` (~80MB)
-- `hyperparams.yaml`
-- `mean_var_norm_emb.ckpt`
-
-## Uso
-
-### 1. Iniciar Jupyter Notebook
-
-```bash
 jupyter notebook
 ```
 
-### 2. Registrar voces
+Ejecuta los notebooks en orden:
+1. **`notebooks/voice_register.ipynb`** - Registra una nueva voz (graba 10s → genera embedding → guarda)
+2. **`notebooks/voice_comparative.ipynb`** - Identifica un hablante (graba 10s → compara con BD)
 
-Abre y ejecuta `notebooks/voice_register.ipynb`:
-- Graba 10 segundos de audio
-- Genera embedding
-- Guarda en `voices_db/{persona_id}.npy`
-
-### 3. Identificar hablantes
-
-Abre y ejecuta `notebooks/voice_comparative.ipynb`:
-- Graba 10 segundos de audio
-- Compara contra voces registradas
-- Muestra identidad si score >= 0.75
-
-## Gestión de Base de Datos
-
-**Ver voces registradas:**
+**Gestionar voces:**
 ```bash
-ls voices_db/
+ls voices_db/              # Ver voces registradas
+rm voices_db/{persona_id}.npy  # Eliminar una voz
 ```
 
-**Eliminar una voz:**
+## Opción 2: Probar con API
+
 ```bash
-rm voices_db/{persona_id}.npy
+python run.py
 ```
 
-## Estructura del Proyecto
+API disponible en `http://localhost:8000`
 
-```
-speach-recognition/
-├── notebooks/
-│   ├── voice_register.ipynb      # Registro de nuevas voces
-│   └── voice_comparative.ipynb   # Identificación de hablantes
-├── models/
-│   └── spkrec-ecapa-voxceleb/   # Modelo ECAPA-TDNN pre-entrenado
-├── voices_db/                    # Base de datos de voces (.npy files)
-├── audio/                        # Audio temporal
-├── audio_tmp/                    # Audio temporal alternativo
-├── requirements.txt              # Dependencias Python
-└── README.md
-```
+**Endpoints principales:**
+- `POST /v1/voices` - Registrar voz
+- `POST /v1/sessions/identify` - Identificar hablante
+- WebSocket `/ws/audio-hook` - Stream de audio en tiempo real
 
-## Parámetros Técnicos
-
-- **Sample Rate:** 16 kHz
-- **Canales:** Mono
-- **Duración grabación:** 10 segundos
-- **Dimensión embedding:** 192-d
-- **Métrica similitud:** Coseno
-- **Threshold identificación:** 0.75
-- **Dispositivo:** CPU only
+Documentación interactiva: `http://localhost:8000/docs`
 
 ## Notas
 
-- Los warnings de torchaudio/tqdm en los notebooks son esperados y no afectan la funcionalidad
-- El sistema requiere acceso al micrófono
-- El modelo ejecuta solo en CPU (no requiere GPU)
+- Requiere micrófono funcional
+- Modelo se descarga automáticamente en primera ejecución
+- Threshold identificación: 0.75 (ajustable)
+- Solo CPU (sin GPU)
+- Windows: usa backend 'soundfile' de torchaudio
