@@ -50,15 +50,19 @@ rm voices_db/{persona_id}.npy  # Eliminar una voz
 ## Opción 2: Probar con API
 
 ```bash
+# Producción (sin auto-reload)
 python run.py
+
+# Desarrollo (con auto-reload en directorio app/)
+ENV=development python run.py
 ```
 
 API disponible en `http://localhost:8000`
 
 **Endpoints principales:**
-- `POST /v1/voices` - Registrar voz
-- `POST /v1/sessions/identify` - Identificar hablante
-- WebSocket `/ws/audio-hook` - Stream de audio en tiempo real
+- `POST /api/v1/voices` - Registrar voz
+- `POST /api/v1/sessions/identify` - Identificar hablante
+- WebSocket `/ws/audiohook` - Stream de audio en tiempo real
 
 Documentación interactiva: `http://localhost:8000/docs`
 
