@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import List
+from typing import List, Optional
 from pydantic import BaseModel, Field
 
 
@@ -12,6 +12,10 @@ class SessionActivateResponse(BaseModel):
     conversation_id: str
     status: str
     activated_at: datetime
+    identified: bool
+    person_id: Optional[str] = None
+    score: float
+    processing_time_seconds: Optional[float] = None
 
 
 class SessionPauseRequest(BaseModel):

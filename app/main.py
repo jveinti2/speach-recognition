@@ -5,7 +5,7 @@ from starlette.websockets import WebSocketState
 from app.config import settings
 from app.dependencies import get_model_manager
 from app.api.v1 import voices, sessions
-from app.api.v1.sessions import get_audio_buffer, get_protocol_handler
+from app.api.v1.sessions import get_audio_buffer, get_protocol_handler, get_session_service
 from app.websocket.connection_manager import ConnectionManager
 from app.websocket.audiohook_handler import AudioHookHandler
 from app.websocket.audiohook_protocol import AudioHookProtocolHandler
@@ -32,11 +32,13 @@ connection_manager = ConnectionManager()
 voice_repository = VoiceRepository()
 audio_buffer = get_audio_buffer()
 protocol_handler = get_protocol_handler()
+session_service = get_session_service()
 
 audiohook_handler = AudioHookHandler(
     audio_buffer,
     connection_manager,
-    voice_repository
+    voice_repository,
+    session_service
 )
 
 
