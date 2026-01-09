@@ -5,7 +5,7 @@ faiss-cpu==1.8.0
 numpy==1.26.4
 sounddevice
 soundfile
-
+requests
 fastapi==0.109.0
 uvicorn[standard]==0.27.0
 python-multipart==0.0.6

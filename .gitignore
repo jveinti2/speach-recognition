@@ -1,4 +1,4 @@
 .claude
 CLAUDE.md
 venv
-models
+models/spkrec-ecapa-voxceleb/_cache

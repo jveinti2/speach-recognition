@@ -4,6 +4,8 @@ Sistema de identificación biométrica de voz usando ECAPA-TDNN de SpeechBrain. 
 
 ## Setup
 
+### Windows
+
 ```bash
 # 1. Crear y activar entorno virtual
 python -m venv venv
@@ -12,6 +14,19 @@ venv\Scripts\activate
 # 2. Instalar dependencias
 python -m pip install --upgrade pip
 python -m pip install torch==2.2.2 torchaudio==2.2.2 --index-url https://download.pytorch.org/whl/cpu
+pip install -r requirements.txt
+```
+
+### Linux
+
+```bash
+# 1. Crear y activar entorno virtual
+python3 -m venv venv
+source venv/bin/activate
+
+# 2. Instalar dependencias
+python -m pip install --upgrade pip
+python -m pip install torch==2.2.2 torchaudio==2.2.2
 pip install -r requirements.txt
 ```
 
