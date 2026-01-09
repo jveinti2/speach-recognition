@@ -15,6 +15,9 @@ venv\Scripts\activate
 python -m pip install --upgrade pip
 python -m pip install torch==2.2.2 torchaudio==2.2.2 --index-url https://download.pytorch.org/whl/cpu
 pip install -r requirements.txt
+
+# 3. Configurar variables de entorno
+copy .env.example .env
 ```
 
 ### Linux
@@ -28,6 +31,9 @@ source venv/bin/activate
 python -m pip install --upgrade pip
 python -m pip install torch==2.2.2 torchaudio==2.2.2
 pip install -r requirements.txt
+
+# 3. Configurar variables de entorno
+cp .env.example .env
 ```
 
 ## Opción 1: Probar con Notebooks
@@ -49,12 +55,16 @@ rm voices_db/{persona_id}.npy  # Eliminar una voz
 
 ## Opción 2: Probar con API
 
+**Modo producción (por defecto, sin auto-reload):**
 ```bash
-# Producción (sin auto-reload)
 python run.py
+```
 
-# Desarrollo (con auto-reload en directorio app/)
-ENV=development python run.py
+**Modo desarrollo (con auto-reload):**
+```bash
+# Editar .env y cambiar:
+# ENV=development
+python run.py
 ```
 
 API disponible en `http://localhost:8000`

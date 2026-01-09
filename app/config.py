@@ -6,6 +6,7 @@ class Settings(BaseSettings):
     APP_NAME: str = "Speech Recognition API"
     VERSION: str = "1.0.0"
     DEBUG: bool = False
+    ENV: str = "production"
 
     BASE_DIR: str = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     MODEL_DIR: str = os.path.join(BASE_DIR, "models", "spkrec-ecapa-voxceleb")

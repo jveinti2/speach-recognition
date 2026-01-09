@@ -1,8 +1,11 @@
 import uvicorn
-import os
+from dotenv import load_dotenv
+from app.config import settings
+
+load_dotenv()
 
 if __name__ == "__main__":
-    is_dev = os.getenv("ENV", "production") == "development"
+    is_dev = settings.ENV == "development"
 
     reload_dirs = ["app"] if is_dev else None
 
