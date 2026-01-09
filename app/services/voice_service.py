@@ -1,4 +1,5 @@
 import os
+from typing import Dict, List
 from datetime import datetime
 from app.core.audio_processor import AudioProcessor
 from app.core.embedding_generator import EmbeddingGenerator
@@ -45,7 +46,7 @@ class VoiceService:
             "file_size_bytes": file_size
         }
 
-    def list_voices(self) -> list[dict]:
+    def list_voices(self) -> List[dict]:
         return self.voice_repository.list_all()
 
     def delete_voice(self, person_id: str) -> dict:

@@ -1,4 +1,5 @@
 from datetime import datetime
+from typing import List
 from pydantic import BaseModel, Field
 
 
@@ -30,5 +31,5 @@ class ActiveSessionResponse(BaseModel):
 
 
 class ActiveSessionsResponse(BaseModel):
-    sessions: list[ActiveSessionResponse]
+    sessions: List[ActiveSessionResponse]
     total: int

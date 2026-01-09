@@ -1,3 +1,4 @@
+from typing import List
 from datetime import datetime
 from app.config import settings
 
@@ -49,7 +50,7 @@ class AudioBuffer:
 
         return duration
 
-    def get_chunks(self, conversation_id: str) -> list[bytes]:
+    def get_chunks(self, conversation_id: str) -> List[bytes]:
         if conversation_id not in self._buffers:
             return []
 
@@ -75,7 +76,7 @@ class AudioBuffer:
 
         return self._buffers[conversation_id]["active"]
 
-    def get_active_sessions(self) -> list[dict]:
+    def get_active_sessions(self) -> List[dict]:
         result = []
         for conversation_id, data in self._buffers.items():
             if data["active"]:

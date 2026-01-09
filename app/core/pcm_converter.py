@@ -1,5 +1,6 @@
 import numpy as np
 import torch
+from typing import List
 from app.config import settings
 
 
@@ -22,7 +23,7 @@ class PCMConverter:
         return waveform
 
     @staticmethod
-    def pcm_chunks_to_waveform(pcm_chunks: list[bytes], sample_rate: int = None) -> torch.Tensor:
+    def pcm_chunks_to_waveform(pcm_chunks: List[bytes], sample_rate: int = None) -> torch.Tensor:
         if not pcm_chunks:
             raise ValueError("Lista de chunks PCM vacía")
 

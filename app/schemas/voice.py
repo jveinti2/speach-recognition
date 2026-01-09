@@ -1,17 +1,18 @@
 from datetime import datetime
+from typing import List
 from pydantic import BaseModel, Field
 
 
 class VoiceRegisterResponse(BaseModel):
     person_id: str
-    embedding_shape: list[int]
+    embedding_shape: List[int]
     registered_at: datetime
     file_path: str
 
 
 class VoiceInfoResponse(BaseModel):
     person_id: str
-    embedding_shape: list[int]
+    embedding_shape: List[int]
     registered_at: datetime
     file_size_bytes: int
 
@@ -22,7 +23,7 @@ class VoiceListResponse(BaseModel):
 
 
 class VoicesListResponse(BaseModel):
-    voices: list[VoiceListResponse]
+    voices: List[VoiceListResponse]
     total: int
 
 

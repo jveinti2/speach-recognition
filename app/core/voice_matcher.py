@@ -1,4 +1,5 @@
 import numpy as np
+from typing import Dict
 from numpy.linalg import norm
 from app.config import settings
 
@@ -9,7 +10,7 @@ class VoiceMatcher:
         return float(np.dot(a, b) / (norm(a) * norm(b)))
 
     @staticmethod
-    def find_match(embedding: np.ndarray, voice_pool: dict[str, np.ndarray], threshold: float = None) -> dict:
+    def find_match(embedding: np.ndarray, voice_pool: Dict[str, np.ndarray], threshold: float = None) -> dict:
         if threshold is None:
             threshold = settings.DEFAULT_THRESHOLD
 

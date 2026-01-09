@@ -1,3 +1,4 @@
+from typing import List
 from datetime import datetime
 from app.utils.audio_buffer import AudioBuffer
 
@@ -24,5 +25,5 @@ class SessionService:
             "status": "paused"
         }
 
-    def get_active_sessions(self) -> list[dict]:
+    def get_active_sessions(self) -> List[dict]:
         return self.audio_buffer.get_active_sessions()

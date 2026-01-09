@@ -1,4 +1,5 @@
 from datetime import datetime
+from typing import Optional, Dict
 from pydantic import BaseModel, Field
 
 
@@ -12,9 +13,9 @@ class AudioHookMessage(BaseModel):
 class IdentificationResult(BaseModel):
     conversation_id: str
     identified: bool
-    person_id: str | None
+    person_id: Optional[str]
     score: float
-    all_scores: dict[str, float]
+    all_scores: Dict[str, float]
     threshold: float
     completed_at: datetime
-    message: str | None = None
+    message: Optional[str] = None

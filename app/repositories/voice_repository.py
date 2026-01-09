@@ -1,5 +1,6 @@
 import os
 import numpy as np
+from typing import Dict, List
 from datetime import datetime
 from app.config import settings
 
@@ -46,10 +47,10 @@ class VoiceRepository:
 
         return self._cache[person_id]
 
-    def get_all_embeddings(self) -> dict[str, np.ndarray]:
+    def get_all_embeddings(self) -> Dict[str, np.ndarray]:
         return {person_id: data["embedding"] for person_id, data in self._cache.items()}
 
-    def list_all(self) -> list[dict]:
+    def list_all(self) -> List[dict]:
         return [
             {
                 "person_id": person_id,
